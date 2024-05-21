@@ -1,3 +1,11 @@
+<!--
+* @Author: zhongyi
+* @Date: 5/21/2024, 3:22:02 PM
+* @LastEditors: zhongyi
+* @LastEditTime: 5/21/2024, 3:37:12 PM
+* @FilePath: \src\components\body.vue
+* @Description:  
+-->
 <template>
   <div class="body">
     <img src="../assets/bg1.png" alt="" class="imgPostion" />
@@ -177,6 +185,16 @@
 <script>
 export default {
   data() {
+    var validatePhone = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('手机号码为必填项'));
+        } else if (!/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/.test(value)) {
+          callback(new Error('手机号码格式不正确'));
+        } else {
+          callback();
+        }
+      }
+
     return {
       dataList: [
         {
@@ -234,9 +252,10 @@ export default {
         aadress: [
           { required: true, message: '个人空间地址为必填项', trigger: 'blur' },
         ],
-        phone: [{ required: true, message: '手机号为必填项', trigger: 'blur' }],
+        phone: [{ validator: validatePhone, trigger: 'blur' }],
         passWord: [
           { required: true, message: '密码为必填项', trigger: 'blur' },
+          { min: 6, max: 32, message: '密码的长度必须是 6-32 位', trigger: 'blur' }
         ],
       },
     };
